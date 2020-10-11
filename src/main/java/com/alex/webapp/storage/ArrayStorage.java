@@ -7,10 +7,7 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage implements Storage {
-    private static final int STORAGE_LIMIT = 10000;
-    private Resume[] storage = new Resume[STORAGE_LIMIT];
-    private int size = 0;
+public class ArrayStorage extends AbstractArrayStorage {
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
@@ -55,10 +52,6 @@ public class ArrayStorage implements Storage {
         } else {
             System.out.println("Can't found resume with id: " + uuid);
         }
-    }
-
-    public int size() {
-        return size;
     }
 
     public void clear() {
