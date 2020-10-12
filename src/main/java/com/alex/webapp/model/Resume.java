@@ -1,6 +1,6 @@
 package com.alex.webapp.model;
 
-public class Resume {
+public class Resume implements Comparable<Resume>{
     private String uuid;
 
     public Resume(String uuid) {
@@ -35,5 +35,10 @@ public class Resume {
         return "Resume{" +
                 "uuid='" + uuid + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        return uuid.compareTo(o.uuid);
     }
 }
