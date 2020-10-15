@@ -3,6 +3,7 @@ package com.alex.webapp.model;
 import java.util.UUID;
 
 public class Resume implements Comparable<Resume>{
+
     private final String uuid;
 
     public Resume() {

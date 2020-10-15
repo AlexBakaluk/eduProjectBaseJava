@@ -7,26 +7,13 @@ import com.alex.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 100000;
+public abstract class AbstractArrayStorage extends AbstractStorage {
+    protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size = 0;
-
-    public int size() {
-        return size;
-    }
-
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage[index];
-    }
 
     public void save(Resume resume) {
         int index = getIndex(resume.getUuid());
-        if(index > 0) {
+        if(index >= 0) {
             throw new ExistStorageException(resume.getUuid());
         } else if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
@@ -47,15 +34,6 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
-    public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(resume.getUuid());
-        } else {
-            storage[index] = resume;
-        }
-    }
-
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
@@ -66,9 +44,15 @@ public abstract class AbstractArrayStorage implements Storage {
         return Arrays.copyOfRange(storage, 0, size);
     }
 
-    protected abstract int getIndex(String uuid);
-
     protected abstract void fillDeletedElement(int index);
 
     protected abstract void insertElement(Resume resume, int index);
+
+    protected void saveResumeInStorage(int index, Resume resume) {
+        storage[index] = resume;
+    }
+
+    protected Resume getResumeFromStorage(int index) {
+        return storage[index];
+    }
 }
