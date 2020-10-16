@@ -1,25 +1,37 @@
 package com.alex.webapp.storage;
 
+import com.alex.webapp.exception.ExistStorageException;
+import com.alex.webapp.exception.NotExistStorageException;
+import com.alex.webapp.exception.StorageException;
 import com.alex.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 100000;
+public abstract class AbstractArrayStorage extends AbstractStorage {
+    protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size = 0;
 
-    public int size() {
-        return size;
+    public void save(Resume resume) {
+        int index = getIndex(resume.getUuid());
+        if(index >= 0) {
+            throw new ExistStorageException(resume.getUuid());
+        } else if (size == STORAGE_LIMIT) {
+            throw new StorageException("Storage overflow", resume.getUuid());
+        } else {
+            insertElement(resume, index);
+            size++;
+        }
     }
 
-    public Resume get(String uuid) {
+    public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index != -1) {
-            return storage[index];
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+        } else {
+            fillDeletedElement(index);
+            storage[size - 1] = null;
+            size--;
         }
-        System.out.println("Resume is not found");
-        return null;
     }
 
     public void clear() {
@@ -32,5 +44,15 @@ public abstract class AbstractArrayStorage implements Storage {
         return Arrays.copyOfRange(storage, 0, size);
     }
 
-    protected abstract int getIndex(String uuid);
+    protected abstract void fillDeletedElement(int index);
+
+    protected abstract void insertElement(Resume resume, int index);
+
+    protected void saveResumeInStorage(int index, Resume resume) {
+        storage[index] = resume;
+    }
+
+    protected Resume getResumeFromStorage(int index) {
+        return storage[index];
+    }
 }

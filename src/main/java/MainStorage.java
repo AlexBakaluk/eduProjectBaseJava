@@ -1,5 +1,4 @@
 import com.alex.webapp.model.Resume;
-import com.alex.webapp.storage.ArrayStorage;
 import com.alex.webapp.storage.SortedArrayStorage;
 import com.alex.webapp.storage.Storage;
 
@@ -19,8 +18,8 @@ public class MainStorage {
 
         System.out.println(r1 == r2);
 
-        ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.save(r4);
+        ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.save(r7);
         printAll();
         ARRAY_STORAGE.save(r1);
@@ -36,6 +35,9 @@ public class MainStorage {
         printAll();
         ARRAY_STORAGE.delete(r1.getUuid());
         ARRAY_STORAGE.delete(r4.getUuid());
+        printAll();
+        ARRAY_STORAGE.save(r1);
+        ARRAY_STORAGE.save(r4);
         printAll();
         ARRAY_STORAGE.clear();
         printAll();
