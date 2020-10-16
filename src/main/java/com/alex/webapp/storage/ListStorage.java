@@ -41,10 +41,6 @@ public class ListStorage extends AbstractStorage{
         }
     }
 
-    @Override
-    protected void saveResumeInStorage(int index, Resume resume) {
-        storage.set(index, resume);
-    }
 
     @Override
     public void delete(String uuid) {

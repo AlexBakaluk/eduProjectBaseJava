@@ -3,6 +3,9 @@ package com.alex.webapp.storage;
 import com.alex.webapp.exception.NotExistStorageException;
 import com.alex.webapp.model.Resume;
 
+import java.util.Collection;
+import java.util.HashMap;
+
 public abstract class AbstractStorage implements Storage{
     protected int size = 0;
 
@@ -17,16 +20,6 @@ public abstract class AbstractStorage implements Storage{
         }
         return getResumeFromStorage(index);
     }
-    public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(resume.getUuid());
-        } else {
-            saveResumeInStorage(index, resume);
-        }
-    }
-
-    protected abstract void saveResumeInStorage(int index, Resume resume);
 
     protected abstract Resume getResumeFromStorage(int index);
 

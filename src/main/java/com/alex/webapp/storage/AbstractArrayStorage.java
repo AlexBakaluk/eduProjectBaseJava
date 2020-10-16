@@ -23,6 +23,15 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         }
     }
 
+    public void update(Resume resume) {
+        int index = getIndex(resume.getUuid());
+        if (index < 0) {
+            throw new NotExistStorageException(resume.getUuid());
+        } else {
+            storage[index] = resume;
+        }
+    }
+
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
@@ -47,10 +56,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void fillDeletedElement(int index);
 
     protected abstract void insertElement(Resume resume, int index);
-
-    protected void saveResumeInStorage(int index, Resume resume) {
-        storage[index] = resume;
-    }
 
     protected Resume getResumeFromStorage(int index) {
         return storage[index];
