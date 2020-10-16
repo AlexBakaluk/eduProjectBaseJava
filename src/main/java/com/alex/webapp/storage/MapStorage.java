@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MapStorage extends AbstractStorage{
-    Map<String, Resume> storage = new HashMap<String, Resume>();
+    protected Map<String, Resume> storage = new HashMap<String, Resume>();
 
     public void update(Resume resume) {
         Resume r = storage.get(resume.getUuid());
