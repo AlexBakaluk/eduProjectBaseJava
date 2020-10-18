@@ -1,27 +1,68 @@
 package com.alex.webapp.storage;
 
+import com.alex.webapp.exception.ExistStorageException;
 import com.alex.webapp.exception.NotExistStorageException;
 import com.alex.webapp.model.Resume;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.List;
 
-public abstract class AbstractStorage implements Storage{
-    protected int size = 0;
+public abstract class AbstractStorage implements Storage {
 
-    public int size() {
-        return size;
+    protected abstract void doDelete(Object searchKey);
+
+    protected abstract void doSave(Resume resume, Object searchKey);
+
+    protected abstract void doUpdate(Resume resume, Object searchKey);
+
+    protected abstract boolean isExist(Object searchKey);
+
+    protected abstract Resume doGet(Object searchKey);
+
+    protected abstract Object getSearchKey(String uuid);
+
+    protected abstract List<Resume> doCopyAll();
+
+    public void update(Resume resume) {
+        Object searchKey = getExistedSearchKey(resume.getUuid());
+        doUpdate(resume, searchKey);
+    }
+
+    public void save(Resume resume) {
+        Object searchKey = getNotExistedSearchKey(resume.getUuid());
+        doSave(resume, searchKey);
+    }
+
+    public void delete(String uuid) {
+        Object searchKey = getExistedSearchKey(uuid);
+        doDelete(searchKey);
     }
 
     public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return getResumeFromStorage(index);
+        Object searchKey = getExistedSearchKey(uuid);
+        return doGet(searchKey);
     }
 
-    protected abstract Resume getResumeFromStorage(int index);
+    private Object getExistedSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (!isExist(searchKey)) {
+            throw new NotExistStorageException(uuid);
+        }
+        return searchKey;
+    }
 
-    protected abstract int getIndex(String uuid);
+    private Object getNotExistedSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (isExist(searchKey)) {
+            throw new ExistStorageException(uuid);
+        }
+        return searchKey;
+    }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> list = doCopyAll();
+        Collections.sort(list);
+        return list;
+    }
 }
