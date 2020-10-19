@@ -1,10 +1,15 @@
 package com.alex.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class OrganisationSection extends Section {
     private final List<Organisation> organisations;
+
+    public OrganisationSection(Organisation... organisations) {
+        this(Arrays.asList(organisations));
+    }
 
     public OrganisationSection(List<Organisation> organisations) {
         Objects.requireNonNull(organisations, "Organisation must not be null");
