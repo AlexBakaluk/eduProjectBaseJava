@@ -1,11 +1,13 @@
 package com.alex.webapp.model;
 
+import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Resume implements Comparable<Resume> {
+public class Resume implements Comparable<Resume>, Serializable {
+    public static final long serialVersionUID = 1L;
 
     private final String uuid;
 

@@ -2,13 +2,16 @@ package com.alex.webapp.model;
 
 import com.alex.webapp.util.DateUtil;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Organisation {
+public class Organisation implements Serializable {
+    public static final long serialVersionUID = 1L;
+
     private final Link homePage;
     private final List<Position> positions;
 
@@ -43,7 +46,9 @@ public class Organisation {
                 '}';
     }
 
-    public static class Position {
+    public static class Position implements Serializable{
+        public static final long serialVersionUID = 1L;
+
         private final LocalDate startDate;
         private final LocalDate endDate;
         private final String title;

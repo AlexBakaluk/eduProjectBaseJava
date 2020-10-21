@@ -1,4 +1,7 @@
 package com.alex.webapp.model;
 
-public abstract class Section {
+import java.io.Serializable;
+
+public abstract class Section implements Serializable {
+    public static final long serialVersionUID = 1L;
 }
